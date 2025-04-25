@@ -25,6 +25,14 @@ const PlayerForm = ({ dispatch }) => {
     const msg = `Olá, me chamo ${name} e quero criar uma aposta com os números ${jogo}. Pode me atualizar o Pix e valor?`
     const encodedMsg = encodeURIComponent(msg)
     const whatsappURL = `https://wa.me/5521968465802?text=${encodedMsg}`
+    dispatch({
+      type: 'ADD_TICKET',
+      payload: {
+        id: Date.now(),
+        name,
+        numbers: selectedNumbers,
+      },
+    })
     window.open(whatsappURL, '_blank')
     toggleForm()
   }

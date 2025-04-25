@@ -1,41 +1,65 @@
-import { useReducer } from 'react';
+import { useReducer } from 'react'
 
 const initialState = {
   players: [],
+  tickets: [],
   drawnNumbers: [],
   history: [],
   winner: null,
   jackpot: 1000,
-};
+}
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_PLAYER':
       return {
         ...state,
-        players: [...state.players, { ...action.payload, matched: Array(6).fill(false) }],
-      };
+        players: [
+          ...state.players,
+          { ...action.payload, matched: Array(6).fill(false) },
+        ],
+      }
     case 'DRAW_NUMBERS':
-      const newDraw = action.payload;
-      const updatedPlayers = state.players.map(player => {
-        const matched = player.numbers.map(num => newDraw.includes(num));
-        return { ...player, matched };
-      });
-      const winner = updatedPlayers.find(p => p.matched.every(Boolean))?.name || null;
+      const newDraw = action.payload
+      const updatedPlayers = state.players.map((player) => {
+        const matched = player.numbers.map((num) => newDraw.includes(num))
+        return { ...player, matched }
+      })
+      const winner =
+        updatedPlayers.find((p) => p.matched.every(Boolean))?.name || null
       return {
         ...state,
         drawnNumbers: newDraw,
-        history: [...state.history, { date: new Date().toLocaleDateString(), numbers: newDraw }],
+        history: [
+          ...state.history,
+          { date: new Date().toLocaleDateString(), numbers: newDraw },
+        ],
         players: updatedPlayers,
         winner: winner,
         jackpot: winner ? 0 : state.jackpot + 100,
-      };
+      }
+    case 'ADD_TICKET':
+      return {
+        ...state,
+        tickets: [...state.tickets, action.payload],
+      }
+    case 'APPROVE_TICKET':
+      return {
+        ...state,
+        tickets: state.tickets.filter((t) => t.id !== action.payload.id),
+        players: [...state.players, action.payload],
+      }
+    case 'REJECT_TICKET':
+      return {
+        ...state,
+        tickets: state.tickets.filter((t) => t.id !== action.payload.id),
+      }
     default:
-      return state;
+      return state
   }
 }
 
 export default function useLotteryReducer() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  return { state, dispatch };
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return { state, dispatch }
 }
