@@ -55,10 +55,7 @@ const App = () => {
             <HistoryLog history={state.history} />
           </>
         ) : (
-          <Dashboard
-            pendingTickets={state.pendingTickets}
-            dispatch={dispatch}
-          />
+          <Dashboard />
         )}
       </PageContainer>
     </Container>

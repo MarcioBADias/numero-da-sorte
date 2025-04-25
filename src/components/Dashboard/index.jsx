@@ -13,6 +13,7 @@ const Dashboard = () => {
     dispatch({ type: 'REJECT_TICKET', payload: ticket })
   }
 
+  console.log(state.tickets)
   return (
     <div>
       <h2>Tickets Pendentes</h2>
