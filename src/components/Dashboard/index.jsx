@@ -32,30 +32,38 @@ const Dashboard = () => {
   }, [dispatch])
 
   const handleApprove = async (ticket) => {
-    await supabase.from('pending_tickets').eq('id', ticket.id)
+    const { error } = await supabase
+      .from('pending_tickets')
+      .update({ status: 'approved' })
+      .eq('id', ticket.id)
 
-    //.update({ status: 'approved' })
-
-    dispatch({ type: 'APPROVE_TICKET', payload: ticket })
+    if (error) {
+      console.error('Erro ao aprovar ticket:', error)
+    } else {
+      dispatch({ type: 'APPROVE_TICKET', payload: ticket })
+    }
   }
 
   const handleReject = async (ticket) => {
-    await supabase
+    const { error } = await supabase
       .from('pending_tickets')
       .update({ status: 'rejected' })
       .eq('id', ticket.id)
 
-    dispatch({ type: 'REJECT_TICKET', payload: ticket })
+    if (error) {
+      console.error('Erro ao reprovar ticket:', error)
+    } else {
+      dispatch({ type: 'REJECT_TICKET', payload: ticket })
+    }
   }
 
-  console.log(state.tickets)
   return (
     <div>
       <h2>Tickets Pendentes</h2>
       {state.pendingTickets.length === 0 && <p>Nenhum ticket pendente.</p>}
-      {state.pendingTickets.map((ticket) => (
+      {state.pendingTickets.map((ticket, index) => (
         <div
-          key={ticket.id}
+          key={index}
           style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}
         >
           <p>

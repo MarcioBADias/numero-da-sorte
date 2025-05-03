@@ -45,16 +45,15 @@ const reducer = (state, action) => {
     case 'APPROVE_TICKET':
       return {
         ...state,
-        players: [...state.players, action.payload],
         pendingTickets: state.pendingTickets.filter(
-          (ticket) => ticket.id !== action.payload.id,
+          (t) => t.id !== action.payload.id,
         ),
       }
     case 'REJECT_TICKET':
       return {
         ...state,
         pendingTickets: state.pendingTickets.filter(
-          (ticket) => ticket.id !== action.payload.id,
+          (t) => t.id !== action.payload.id,
         ),
       }
     default:
