@@ -46,7 +46,7 @@ const App = () => {
             <TopHeader drawnNumbers={state.drawnNumbers} />
             <DrawButton dispatch={dispatch} />
             <PlayerForm dispatch={dispatch} />
-            <PlayerList players={state.players} />
+            <PlayerList />
             {state.winner && (
               <h2>
                 🎉 Parabéns, {state.winner}! Você ganhou o prêmio acumulado!

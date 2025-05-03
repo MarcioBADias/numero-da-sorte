@@ -28,10 +28,10 @@ const PlayerForm = ({ dispatch }) => {
 
   const handleBuy = async () => {
     const orderedNumbers = selectedNumbers.sort((a, b) => a - b)
-    //const jogo = orderedNumbers.join(', ')
-    //const msg = `Olá, me chamo ${name} e quero criar uma aposta com os números ${jogo}. Pode me atualizar o Pix e valor?`
-    //const encodedMsg = encodeURIComponent(msg)
-    //const whatsappURL = `https://wa.me/5521968465802?text=${encodedMsg}`
+    const jogo = orderedNumbers.join(', ')
+    const msg = `Olá, me chamo ${name} e quero criar uma aposta com os números ${jogo}. Pode me atualizar o Pix e valor?`
+    const encodedMsg = encodeURIComponent(msg)
+    const whatsappURL = `https://wa.me/5521968465802?text=${encodedMsg}`
 
     const { data, error } = await supabase.from('pending_tickets').insert([
       {
@@ -54,7 +54,7 @@ const PlayerForm = ({ dispatch }) => {
         },
       })
     }
-    //window.open(whatsappURL, '_blank')
+    window.open(whatsappURL, '_blank')
     toggleForm()
   }
 
