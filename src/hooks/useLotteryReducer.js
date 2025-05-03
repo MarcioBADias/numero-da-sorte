@@ -1,12 +1,11 @@
 import { useReducer } from 'react'
 
 const initialState = {
-  players: [],
-  tickets: [],
   drawnNumbers: [],
+  players: [],
+  pendingTickets: [],
+  winner: '',
   history: [],
-  winner: null,
-  jackpot: 1000,
 }
 
 const reducer = (state, action) => {
@@ -38,21 +37,25 @@ const reducer = (state, action) => {
         winner: winner,
         jackpot: winner ? 0 : state.jackpot + 100,
       }
-    case 'ADD_TICKET':
+    case 'ADD_PENDING_TICKET':
       return {
         ...state,
-        tickets: [...state.tickets, action.payload],
+        pendingTickets: [...state.pendingTickets, action.payload],
       }
     case 'APPROVE_TICKET':
       return {
         ...state,
-        tickets: state.tickets.filter((t) => t.id !== action.payload.id),
         players: [...state.players, action.payload],
+        pendingTickets: state.pendingTickets.filter(
+          (ticket) => ticket.id !== action.payload.id,
+        ),
       }
     case 'REJECT_TICKET':
       return {
         ...state,
-        tickets: state.tickets.filter((t) => t.id !== action.payload.id),
+        pendingTickets: state.pendingTickets.filter(
+          (ticket) => ticket.id !== action.payload.id,
+        ),
       }
     default:
       return state
